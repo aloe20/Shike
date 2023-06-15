@@ -1,0 +1,24 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    //https://ktor.io/changelog/
+    implementation "io.ktor:ktor-server-core:2.3.0"
+    implementation "io.ktor:ktor-server-cors:2.3.0"
+    implementation "io.ktor:ktor-server-netty:2.3.0"
+    implementation "io.ktor:ktor-server-freemarker:2.3.0"
+    implementation "io.ktor:ktor-server-websockets:2.3.0"
+    implementation "io.ktor:ktor-server-status-pages:2.3.0"
+    implementation "io.ktor:ktor-server-default-headers:2.3.0"
+    implementation("io.ktor:ktor-server-content-negotiation:2.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+    implementation("ch.qos.logback:logback-classic:1.4.7")
+}

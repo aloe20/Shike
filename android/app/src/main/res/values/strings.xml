@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">android</string>
+    <item name="nav_id" type="id"/>
+</resources>
