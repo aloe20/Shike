@@ -14,4 +14,5 @@ abstract class IBridge {
 
   void initStatus();
   void getStatusHeight(ValueChanged<double> callback);
+  Future<String> convertHtml(String html);
 }

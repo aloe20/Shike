@@ -1,5 +1,6 @@
 package com.aloe.android.flutter
 
+import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -8,7 +9,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class AppPlugin(private val callback: ((MethodCall) -> Unit)? = null) : FlutterPlugin,
+class AppPlugin(private val callback: ((MethodCall,MethodChannel.Result) -> Unit)? = null) : FlutterPlugin,
     MethodChannel.MethodCallHandler, ActivityAware {
     private var channel: MethodChannel? = null
 
@@ -23,13 +24,14 @@ class AppPlugin(private val callback: ((MethodCall) -> Unit)? = null) : FlutterP
     }
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        callback?.invoke(call)
+        callback?.invoke(call,result)
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         ViewCompat.setOnApplyWindowInsetsListener(binding.activity.window.decorView) { v, insets ->
             ViewCompat.setOnApplyWindowInsetsListener(v, null)
             val statusInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            statusHeight = (statusInsets.top / v.resources.displayMetrics.density).dp
             channel?.invokeMethod(
                 "getResult",
                 mapOf("statusBarHeight" to (statusInsets.top / v.resources.displayMetrics.density))
@@ -50,3 +52,5 @@ class AppPlugin(private val callback: ((MethodCall) -> Unit)? = null) : FlutterP
 
     }
 }
+
+var statusHeight = 0.dp

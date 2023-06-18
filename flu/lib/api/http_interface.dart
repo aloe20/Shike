@@ -11,4 +11,8 @@ abstract class IHttp {
   static IHttp get instance => _instance;
 
   Future<List<BannerBean>> getBanner();
+
+  Future<List<ArticleBean>> getTop();
+
+  Future<List<ArticleBean>> getHomeList(int index);
 }

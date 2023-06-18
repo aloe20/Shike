@@ -11,6 +11,11 @@ class BridgeImpl extends IBridge {
   }
 
   @override
+  Future<String> convertHtml(String html) async {
+    return await _channel.invokeMethod("convertHtml", {"data":html});
+  }
+
+  @override
   void initStatus() {
     _channel.setMethodCallHandler((call) async {
       switch (call.method) {

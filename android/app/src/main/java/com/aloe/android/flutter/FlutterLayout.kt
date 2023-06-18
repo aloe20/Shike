@@ -3,9 +3,9 @@ package com.aloe.android.flutter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -52,16 +52,21 @@ class FluLayout(context: Context) : FlutterView(context) {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         attachedFlutterEngine?.also { engine ->
-            engine.plugins.add(AppPlugin {
-                when (it.method) {
+            engine.plugins.add(AppPlugin{call, result ->
+                when (call.method) {
                     "navigation" -> {
-                        when(it.argument<String>("pageName")){
+                        when(call.argument<String>("pageName")){
                             "web"->{
-                                val url = it.argument<String>("url")
+                                val url = call.argument<String>("url")
                                 val nav = (context as Activity).window.decorView.getTag(androidx.navigation.R.id.nav_controller_view_tag) as NavHostController
                                 nav.navigate("web?url=$url")
                             }
                         }
+                    }
+                    "convertHtml"->{
+                        val html = call.argument<String>("data")?:""
+                        val str = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
+                        result.success(str)
                     }
                 }
             })
@@ -95,7 +100,7 @@ class FluLayout(context: Context) : FlutterView(context) {
         }
     }
 
-    fun onRequestPermissionsResult(
+    /*fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
@@ -117,7 +122,7 @@ class FluLayout(context: Context) : FlutterView(context) {
 
     fun onUserLeaveHint() {
         attachedFlutterEngine?.activityControlSurface?.onUserLeaveHint()
-    }
+    }*/
 
     fun loadPage(route: String? = null) {
         attachToFlutterEngine(

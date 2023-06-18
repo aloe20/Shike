@@ -2,7 +2,6 @@ import 'package:flu/api/http_interface.dart';
 import 'package:flu/bean/http_result.dart';
 import 'package:flu/bridge/bridge_interface.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,14 +14,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   List<BannerBean> _banners = [];
-  late final List<Item> _items;
+  List<ArticleBean> _tops = [];
+  List<ArticleBean> _list = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   double _statusHeight = 0;
 
   @override
   void initState() {
     super.initState();
-    _items = [
+    /*_items = [
       Item("打开左边面板", () => _scaffoldKey.currentState?.openDrawer()),
       Item(
           "显示底部弹窗",
@@ -62,17 +62,22 @@ class _HomePageState extends State<HomePage> {
                       .toList(),
                 ));
       })
-    ];
-    IHttp.instance.getBanner().then((value) {
-      setState(() {
-        _banners = value;
-      });
-    });
-    IBridge.instance.getStatusHeight((value) {
-      setState(() {
-        _statusHeight = value;
-      });
-    });
+    ];*/
+    IHttp.instance
+        .getBanner()
+        .then((value) => setState(() => _banners = value));
+    IHttp.instance.getTop().then((value) => setState(() {
+          _tops = value;
+          if (_tops.isNotEmpty) {
+            Future.forEach(value, (element) {
+              return IBridge.instance
+                  .convertHtml(element.desc)
+                  .then((value) => setState(() => element.desc = value));
+            });
+          }
+        }));
+    IHttp.instance.getHomeList(0).then((value) => setState(() =>_list = value));
+    IBridge.instance.getStatusHeight((value) =>setState(() =>_statusHeight = value));
   }
 
   @override
@@ -89,7 +94,10 @@ class _HomePageState extends State<HomePage> {
                 )),
         title: Padding(
           padding: EdgeInsets.only(top: _statusHeight),
-          child: Text(AppLocalizations.of(context)!.home),
+          child: Text(
+            AppLocalizations.of(context)!.home,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
         centerTitle: true,
         toolbarHeight: 44 + _statusHeight,
@@ -112,8 +120,8 @@ class _HomePageState extends State<HomePage> {
             );
           } else {
             return NavigationDrawerDestination(
-                icon: const Icon(Icons.widgets_outlined),
-                selectedIcon: const Icon(Icons.widgets),
+                icon: const Icon(Icons.web_outlined),
+                selectedIcon: const Icon(Icons.web),
                 label: Text("Widget$index"));
           }
         }),
@@ -122,7 +130,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           [
             SizedBox(
-              height: 120,
+              height: 160,
               child: PageView(
                   children: _banners
                       .map((e) => GestureDetector(
@@ -131,16 +139,65 @@ class _HomePageState extends State<HomePage> {
                               fit: BoxFit.fitWidth,
                             ),
                             onTap: () => IBridge.instance
-                                .navigate({"pageName":"web","url": e.url}),
+                                .navigate({"pageName": "web", "url": e.url}),
                           ))
                       .toList()),
             ),
           ],
-          _items
+          /*_items
               .map((e) => Card(
                     child: ListTile(
                       title: Text(e.title),
                       onTap: e.callback,
+                    ),
+                  ))
+              .toList(),*/
+          _tops
+              .map((e) => GestureDetector(
+                    onTap: () => IBridge.instance
+                        .navigate({"pageName": "web", "url": e.link}),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(e.title),
+                            Text(
+                              e.desc,
+                              maxLines: 5,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ))
+              .toList(),
+          _list
+              .map((e) => GestureDetector(
+                    onTap: () => IBridge.instance
+                        .navigate({"pageName": "web", "url": e.link}),
+                    child: Card(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              e.title,
+                            ),
+                            Visibility(
+                              visible: e.desc.isNotEmpty,
+                              child: Text(
+                                e.desc,
+                                maxLines: 5,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ))
               .toList()
@@ -150,9 +207,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Item {
+/*class Item {
   const Item(this.title, this.callback);
 
   final String title;
   final GestureTapCallback callback;
-}
+}*/
