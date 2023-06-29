@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 rootProject.name = "android"
 include ':app',':server',':flu'
 project(":flu").projectDir = new File("../flu")
-setBinding(new Binding([gradle: this]))
-evaluate(new File(settingsDir.parentFile,'flu/.android/include_flutter.groovy'))
+//setBinding(new Binding([gradle: this]))
+//evaluate(new File(settingsDir.parentFile,'flu/.android/include_flutter.groovy'))
