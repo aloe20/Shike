@@ -6,5 +6,14 @@
     "explore": "浏览",
     "favorite": "喜欢",
     "bookmark": "收藏",
-    "common_website": "常用网站"
+    "common_website": "常用网站",
+    "compute": "{num}以内的计算",
+    "@compute": {
+        "description": "某个数以内的计算",
+        "placeholders": {
+            "num": {
+                "type": "int"
+            }
+        }
+    }
 }

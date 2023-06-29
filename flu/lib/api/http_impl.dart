@@ -17,9 +17,10 @@ class HttpImpl implements IHttp {
     } else {
       return HttpResult<List<BannerBean>>.fromJson(
           result,
-          (json) => (json as List<dynamic>)
-              .map((e) => BannerBean.fromJson(e))
-              .toList()).data;
+              (json) =>
+              (json as List<dynamic>)
+                  .map((e) => BannerBean.fromJson(e))
+                  .toList()).data;
     }
   }
 
@@ -31,9 +32,10 @@ class HttpImpl implements IHttp {
     } else {
       return HttpResult<List<ArticleBean>>.fromJson(
           result,
-          (json) => (json as List<dynamic>)
-              .map((e) => ArticleBean.fromJson(e))
-              .toList()).data;
+              (json) =>
+              (json as List<dynamic>)
+                  .map((e) => ArticleBean.fromJson(e))
+                  .toList()).data;
     }
   }
 

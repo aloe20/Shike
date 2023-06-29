@@ -1,4 +1,5 @@
 import 'package:flu/bridge/bridge_interface.dart';
+import 'package:flu/page/compute.dart';
 import 'package:flu/page/main.dart';
 import 'package:flu/page/only_data.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routes: {
             '/': (_) => const MainPage(),
+            "compute":(_)=>const ComputeLayout(),
             'onlyData': (_) => const OnlyData()
           },
         ));

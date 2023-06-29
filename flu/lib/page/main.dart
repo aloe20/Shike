@@ -2,7 +2,7 @@ import 'package:flu/bean/icon_bean.dart';
 import 'package:flu/page/bookmark.dart';
 import 'package:flu/page/explore.dart';
 import 'package:flu/page/favorite.dart';
-import 'package:flu/page/home/home.dart';
+import 'package:flu/page/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
