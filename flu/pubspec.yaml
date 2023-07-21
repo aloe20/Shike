@@ -4,7 +4,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: '>=3.0.6 <4.0.0'
 
 # https://pub.flutter-io.cn/
 # https://pub.dev/
@@ -17,14 +17,14 @@ dependencies:
   cupertino_icons: ^1.0.5
   json_annotation: ^4.8.1
   url_strategy: ^0.2.0
-  dio: ^5.1.2
+  dio: ^5.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
-  build_runner: ^2.4.4
-  json_serializable: ^6.7.0
+  flutter_lints: ^2.0.2
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
